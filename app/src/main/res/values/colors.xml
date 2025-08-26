@@ -5,6 +5,8 @@
     <color name="primary">#33A1E0</color>
     <color name="secondary">#213448</color>
     <color name="other">#FF9B00</color>
-
-
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="background_dark">#121212</color>
 </resources>
