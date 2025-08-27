@@ -17,7 +17,7 @@
         android:layout_marginBottom="32dp"
         android:contentDescription="@string/onboarding_image_description"
         android:scaleType="centerCrop"
-        android:src="@drawable/onboarding"
+        android:src="@drawable/onboarding1"
         app:layout_constraintBottom_toTopOf="@+id/tv_onboarding_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.4"
