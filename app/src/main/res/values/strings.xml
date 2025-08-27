@@ -11,6 +11,6 @@
     <string name="login_subtitle">Hope you have fun learning with us!</string>
     <string name="welcome_text">Welcome To The Future of Learning</string>
     <string name="sign_in_email">Sign in with Email</string>
-    <string name="dont_have_account">dont have account</string>
+    <string name="dont_have_account">don\'t have an account</string>
     <string name="sign_up">sign up</string>
 </resources>
