@@ -7,6 +7,5 @@
     <color name="other">#FF9B00</color>
     <color name="purple_500">#6200EE</color>
     <color name="purple_200">#BB86FC</color>
-    <color name="background_light">#FFFFFF</color>
     <color name="background_dark">#121212</color>
 </resources>

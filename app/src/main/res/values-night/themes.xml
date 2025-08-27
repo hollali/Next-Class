@@ -3,6 +3,7 @@
         <!-- Core colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorSecondary">@color/secondary</item>
+
         <!--<item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/on_surface</item>
         <item name="colorOnPrimary">@color/on_primary</item>-->
