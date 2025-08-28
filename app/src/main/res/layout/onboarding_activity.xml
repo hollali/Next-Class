@@ -10,6 +10,9 @@
     tools:context=".OnboardingActivity">
 
     <!-- Onboarding Image -->
+
+    <!-- Onboarding Title -->
+
     <ImageView
         android:id="@+id/iv_onboarding"
         android:layout_width="0dp"
@@ -21,38 +24,40 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_onboarding_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.538" />
 
-    <!-- Onboarding Title -->
     <TextView
         android:id="@+id/tv_onboarding_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="361dp"
+        android:layout_height="51dp"
         android:layout_marginBottom="16dp"
+        android:fontFamily="@font/lato_bold"
         android:gravity="center"
         android:text="@string/onboarding_title"
-        android:textColor="?attr/colorOnBackground"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textColor="@color/primary"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_onboarding_description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv_onboarding_description" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Onboarding Description -->
     <TextView
         android:id="@+id/tv_onboarding_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="366dp"
+        android:layout_height="51dp"
         android:layout_marginBottom="48dp"
+        android:fontFamily="sans-serif"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="@string/onboarding_description"
-        android:textColor="?attr/colorOnBackground"
+        android:textColor="@color/other"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_get_started"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_get_started" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Get Started Button -->
     <com.google.android.material.button.MaterialButton
