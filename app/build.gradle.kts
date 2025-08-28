@@ -40,4 +40,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.google.firebase:firebase-auth:23.1.0")
+// Firebase Authentication
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+// Google Sign-In
 }
