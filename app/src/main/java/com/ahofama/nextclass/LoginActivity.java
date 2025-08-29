@@ -2,16 +2,15 @@ package com.ahofama.nextclass;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.gms.tasks.Task;
-
-
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -51,9 +50,11 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d("GoogleSignIn", "Sign-in successful, ID Token: " + account.getIdToken());
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(this, "Google sign-in failed", Toast.LENGTH_SHORT).show();
+                Log.e("GoogleSignIn", "Sign-in failed: " + e.getStatusCode() + " - " + e.getMessage(), e);
+                Toast.makeText(this, "Google sign-in failed: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -68,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(this, DashboardActivity.class));
                         finish();
                     } else {
+                        Log.e("FirebaseAuth", "signInWithCredential: failure", task.getException());
                         Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
