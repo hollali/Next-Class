@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services") // ✅ Apply plugin here instead of at bottom
 }
 
 android {
@@ -27,6 +28,7 @@ android {
         }
     }
 
+    // ✅ Keep only Java 17 (remove duplicate Java 8 block)
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -35,11 +37,11 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-}
 
-
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-Xlint:deprecation")
+    // ✅ Show deprecated API warnings during build
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.add("-Xlint:deprecation")
+    }
 }
 
 dependencies {
@@ -62,6 +64,3 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 }
-
-// 👇 Google Services plugin must be applied last
-apply(plugin = "com.google.gms.google-services")
