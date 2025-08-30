@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "1068433159642",
-    "project_id": "nextclass-project",
-    "storage_bucket": "nextclass-project.firebasestorage.app"
+    "project_number": "744221201058",
+    "project_id": "next-class-5a745",
+    "storage_bucket": "next-class-5a745.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1068433159642:android:a62f05e6213195ab3e3ce3",
+        "mobilesdk_app_id": "1:744221201058:android:10127828c535472ed9bdfb",
         "android_client_info": {
           "package_name": "com.ahofama.nextclass"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1068433159642-sdodg7k9t0cv3f38pl2q7gh7ciet0h82.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ahofama.nextclass",
-            "certificate_hash": "97e1378a377ae50555e5ac3189cc1bc02b520770"
-          }
-        },
-        {
-          "client_id": "1068433159642-23lk9ivt7vj2flejqmu629277q8unsks.apps.googleusercontent.com",
+          "client_id": "744221201058-qloqvsiks91so15d5dpelb0ie9oho4f3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCTQo2tEwm8oz94k-SXbeA-z1SkBAZRw54"
+          "current_key": "AIzaSyBCuegGJZvbsNh4wlW4CM7In5oxe_0koBs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1068433159642-23lk9ivt7vj2flejqmu629277q8unsks.apps.googleusercontent.com",
+              "client_id": "744221201058-qloqvsiks91so15d5dpelb0ie9oho4f3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
