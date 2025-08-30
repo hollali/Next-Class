@@ -8,6 +8,6 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_dashboard); // Make sure activity_dashboard.xml exists
+        setContentView(R.layout.dasboard_activity);
     }
 }

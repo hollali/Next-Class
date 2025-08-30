@@ -14,8 +14,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "744221201058-qloqvsiks91so15d5dpelb0ie9oho4f3.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "744221201058-t54rvmbcgibl657hq7m7pd901b843fco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ahofama.nextclass",
+            "certificate_hash": "30c6d1693dd4c2453d53e323c010de208501bb2b"
+          }
         }
       ],
       "api_key": [
@@ -27,7 +31,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "744221201058-qloqvsiks91so15d5dpelb0ie9oho4f3.apps.googleusercontent.com",
+              "client_id": "744221201058-jkbsf4sm3m3802e5n9nhje5b7lebsgv3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
