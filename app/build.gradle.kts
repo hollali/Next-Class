@@ -1,17 +1,17 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services") // ✅ Apply plugin here instead of at bottom
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.ahofama.nextclass"
-    compileSdk = 35
+    compileSdk = 35 // ✅ Updated for latest AndroidX libraries
 
     defaultConfig {
         applicationId = "com.ahofama.nextclass.v2"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 34 // ✅ Keep as 34 for now (safe)
         versionCode = 1
         versionName = "1.0"
 
@@ -28,19 +28,13 @@ android {
         }
     }
 
-    // ✅ Keep only Java 17 (remove duplicate Java 8 block)
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17 // ✅ Match Kotlin jvmTarget
         targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "17"
-    }
-
-    // ✅ Show deprecated API warnings during build
-    tasks.withType<JavaCompile> {
-        options.compilerArgs.add("-Xlint:deprecation")
+        jvmTarget = "17" // ✅ Required for AGP 8.x and latest dependencies
     }
 }
 
@@ -53,14 +47,13 @@ dependencies {
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
 
+    // Firebase & Google Sign-In
+    implementation("com.google.firebase:firebase-auth:23.1.0")
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
-    // Firebase Authentication
-    implementation("com.google.firebase:firebase-auth:23.1.0")
-
-    // Google Sign-In
-    implementation("com.google.android.gms:play-services-auth:21.3.0")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 }
