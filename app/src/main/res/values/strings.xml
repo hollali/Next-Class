@@ -9,9 +9,9 @@
     <string name="sign_in_google">Continue with Google</string>
     <string name="or_text">or</string>
     <string name="login_subtitle">Hope you have fun learning with us!</string>
-    <string name="welcome_text">Welcome To The Future of Learning</string>
+    <string name="welcome_text">Welcome To The Future of Learning.</string>
     <string name="sign_in_email">Sign in with Email</string>
-    <string name="dont_have_account">Don\'t have an account</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
     <string name="sign_up">sign up</string>
-    <string name="default_web_client_id">YOUR_CLIENT_ID.apps.googleusercontent.com</string>
+    <string name="default_web_client_id">744221201058-jkbsf4sm3m3802e5n9nhje5b7lebsgv3.apps.googleusercontent.com</string>
 </resources>

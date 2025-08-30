@@ -9,6 +9,7 @@
         <item name="colorOnPrimary">@color/on_primary</item>-->
 
         <!-- Typography -->
-        <!--<item name="android:fontFamily">@font/poppins</item>-->
+        <item name="android:fontFamily">@font/poppins</item>
+
     </style>
 </resources>

@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.ahofama.nextclass" />
+                  <option name="mobileSdkAppId" value="1:744221201058:android:10127828c535472ed9bdfb" />
+                  <option name="projectId" value="next-class-5a745" />
+                  <option name="projectNumber" value="744221201058" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
