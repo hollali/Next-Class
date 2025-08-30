@@ -12,10 +12,33 @@
           "package_name": "com.ahofama.nextclass"
         }
       },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCuegGJZvbsNh4wlW4CM7In5oxe_0koBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744221201058:android:c4e8d8878d5e41f1d9bdfb",
+        "android_client_info": {
+          "package_name": "com.ahofama.nextclass.v2"
+        }
+      },
       "oauth_client": [
         {
-          "client_id": "744221201058-qloqvsiks91so15d5dpelb0ie9oho4f3.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "744221201058-8eou54tdd89vaihmhlrlqpeoembprs3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ahofama.nextclass.v2",
+            "certificate_hash": "97e1378a377ae50555e5ac3189cc1bc02b520770"
+          }
         }
       ],
       "api_key": [
@@ -25,12 +48,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "744221201058-qloqvsiks91so15d5dpelb0ie9oho4f3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
