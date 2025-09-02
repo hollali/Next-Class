@@ -1,71 +1,60 @@
 package com.ahofama.nextclass;
 
-import androidx.annotation.NonNull;
+import   androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.ahofama.nextclass.databinding.DasboardActivityBinding;
 import com.google.android.material.navigation.NavigationView;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity{
 
-    private DrawerLayout drawerLayout;
+    DasboardActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dasboard_activity);
+        binding = DasboardActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
 
-        Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
-        setSupportActionBar(toolbar);
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            switch (item.getItemId()){
+                case R.id.explore:
+                    replaceFragment(new ExploreFragment());
+                    break;
+                case R.id. course:
+                    replaceFragment(new MycourseFragment());
+                    break;
+                case R.id.wishlist:
+                    replaceFragment(new WishlistFragment());
+                    break;
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
-                R.string.close_nav);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
+            }
+
+            return true;
+        });
+
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
+    private void replaceFragment(Fragment fragment){
 
-        if (itemId == R.id.nav_home) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-        } else if (itemId == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
-        } else if (itemId == R.id.nav_share) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareFragment()).commit();
-        } else if (itemId == R.id.nav_about) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
-        } else if (itemId == R.id.nav_logout) {
-            Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment );
+        fragmentTransaction.commit();
 
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 }

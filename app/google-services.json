@@ -37,6 +37,30 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744221201058:android:0bc3b9610835926bd9bdfb",
+        "android_client_info": {
+          "package_name": "com.ahofama.nextclass.v2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCuegGJZvbsNh4wlW4CM7In5oxe_0koBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744221201058-jkbsf4sm3m3802e5n9nhje5b7lebsgv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

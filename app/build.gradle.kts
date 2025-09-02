@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -9,7 +10,7 @@ android {
     compileSdk = 35 // ✅ Updated for latest AndroidX libraries
 
     defaultConfig {
-        applicationId = "com.ahofama.nextclass"
+        applicationId = "com.ahofama.nextclass.v2"
         minSdk = 28
         targetSdk = 34 // ✅ Keep as 34 for now (safe)
         versionCode = 1
@@ -26,6 +27,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    buildFeatures{
+        viewBinding = true
     }
 
     compileOptions {
@@ -50,6 +55,8 @@ dependencies {
     // Firebase & Google Sign-In
     implementation("com.google.firebase:firebase-auth:23.1.0")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.drawerlayout)
 
 
     // Testing
