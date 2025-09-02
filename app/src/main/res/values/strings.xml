@@ -22,5 +22,11 @@
     <string name="about_us">About Us</string>
     <string name="logout">Logout</string>
     <string name="search">search</string>
+    <string name="explore">Explore</string>
+    <string name="my_course">My Course</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="account">Account</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="explore_page_text">Explore Page</string>
 
 </resources>

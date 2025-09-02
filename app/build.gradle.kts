@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -28,6 +29,10 @@ android {
         }
     }
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17 // ✅ Match Kotlin jvmTarget
         targetCompatibility = JavaVersion.VERSION_17
@@ -50,6 +55,8 @@ dependencies {
     // Firebase & Google Sign-In
     implementation("com.google.firebase:firebase-auth:23.1.0")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.drawerlayout)
 
 
     // Testing

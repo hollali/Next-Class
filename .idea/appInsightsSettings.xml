@@ -9,8 +9,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.ahofama.nextclass" />
-                  <option name="mobileSdkAppId" value="1:744221201058:android:10127828c535472ed9bdfb" />
+                  <option name="appId" value="com.ahofama.nextclass.v2" />
+                  <option name="mobileSdkAppId" value="1:744221201058:android:0bc3b9610835926bd9bdfb" />
                   <option name="projectId" value="next-class-5a745" />
                   <option name="projectNumber" value="744221201058" />
                 </ConnectionSetting>
