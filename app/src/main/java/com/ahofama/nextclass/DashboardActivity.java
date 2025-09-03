@@ -1,6 +1,6 @@
 package com.ahofama.nextclass;
 
-import   androidx.annotation.NonNull;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,32 +29,24 @@ public class DashboardActivity extends AppCompatActivity{
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
 
-            switch (item.getItemId()){
-                case R.id.explore:
-                    replaceFragment(new ExploreFragment());
-                    break;
-                case R.id. course:
-                    replaceFragment(new MycourseFragment());
-                    break;
-                case R.id.wishlist:
-                    replaceFragment(new WishlistFragment());
-                    break;
-
-
+            if (itemId == R.id.explore) {
+                replaceFragment(new ExploreFragment());
+            } else if (itemId == R.id.course) {
+                replaceFragment(new MycourseFragment());
+            } else if (itemId == R.id.wishlist) {
+                replaceFragment(new WishlistFragment());
             }
 
             return true;
         });
-
     }
 
     private void replaceFragment(Fragment fragment){
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment );
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
-
     }
 }
