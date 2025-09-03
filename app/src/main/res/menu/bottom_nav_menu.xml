@@ -7,8 +7,8 @@
     <item android:title="@string/explore"
         android:icon="@drawable/outline_explore_24"
         android:id="@+id/explore"/>
-    <item android:title="@string/my_course"
-        android:icon="@drawable/baseline_play_circle_outline_24"
+    <item android:title="@string/create"
+        android:icon="@drawable/ic_add"
         android:id="@+id/course"/>
     <item android:title="@string/wishlist"
         android:icon="@drawable/baseline_favorite_24"

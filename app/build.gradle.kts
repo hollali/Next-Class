@@ -58,6 +58,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.drawerlayout)
 
+    implementation("com.google.android.material:material:<latest-version>")
+    implementation("androidx.viewpager2:viewpager2:<latest-version>")
 
     // Testing
     testImplementation(libs.junit)
