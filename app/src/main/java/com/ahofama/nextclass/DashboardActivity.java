@@ -31,12 +31,20 @@ public class DashboardActivity extends AppCompatActivity{
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            if (itemId == R.id.explore) {
+            if (itemId == R.id.home) {
+                replaceFragment(new HomeFragment());
+            }
+            else if (itemId == R.id.explore) {
                 replaceFragment(new ExploreFragment());
-            } else if (itemId == R.id.course) {
+            }
+            else if (itemId == R.id.course) {
                 replaceFragment(new MycourseFragment());
-            } else if (itemId == R.id.wishlist) {
+            }
+            else if (itemId == R.id.wishlist) {
                 replaceFragment(new WishlistFragment());
+            }
+            else if (itemId == R.id.profile) {
+                replaceFragment(new ProfileFragment());
             }
 
             return true;

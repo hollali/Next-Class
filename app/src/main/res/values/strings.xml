@@ -25,9 +25,11 @@
     <string name="wishlist">Wishlist</string>
     <string name="my_course">Course\n</string>
     <string name="explore">Explore</string>
+    <string name="profile">profile\n</string>
 
     <string name="explore_page_text">This is the Explore Page</string>
     <string name="welcome_to_next_class">Welcome to Next Class</string>
     <string name="contact_ahofama_org">Contact: ahofama.org</string>
+
 
 </resources>
