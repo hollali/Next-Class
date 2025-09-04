@@ -42,13 +42,13 @@ public class HomeFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText("My Courses");
+                    tab.setText("Explore");
                     break;
                 case 1:
                     tab.setText("Wishlist");
                     break;
                 case 2:
-                    tab.setText("Explore");
+                    tab.setText("My Courses");
                     break;
             }
         }).attach();

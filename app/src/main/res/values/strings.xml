@@ -45,6 +45,9 @@
     <string name="google_account">Google Account</string>
     <string name="logging_out">Logout</string>
     <string name="inbox">Inbox</string>
+    <string name="completed">completed</string>
+    <string name="enrolled_courses">Enroolled Courses</string>
+    <string name="edit_profile">Edit Profile</string>
 
 
 </resources>

@@ -25,9 +25,7 @@ public class DashboardActivity extends AppCompatActivity {
                 replaceFragment(new HomeFragment());
             } else if (itemId == R.id.search) {
                 replaceFragment(new SearchFragment());
-            } else if (itemId == R.id.course) {
-                replaceFragment(new MyCourseFragment());
-            } else if (itemId == R.id.notifications) {
+            } else if (itemId == R.id.message) {
                 replaceFragment(new NotificationsFragment());
             } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());

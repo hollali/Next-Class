@@ -7,12 +7,12 @@
     <item android:title="@string/search"
         android:icon="@drawable/ic_search"
         android:id="@+id/search"/>
-    <item android:title="@string/create"
+    <!--<item android:title="@string/create"
         android:icon="@drawable/ic_add"
-        android:id="@+id/course"/>
+        android:id="@+id/course"/>-->
     <item android:title="@string/inbox"
         android:icon="@drawable/ic_message"
-        android:id="@+id/notifications"/>
+        android:id="@+id/message"/>
     <item android:title="@string/profile"
         android:icon="@drawable/ic_person"
         android:id="@+id/profile"/>

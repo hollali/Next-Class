@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions must be here, inside <manifest> but outside <application> -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,13 +27,14 @@
             </intent-filter>
         </activity>
 
-        <!-- Add LoginActivity -->
+        <!-- Other activities -->
         <activity android:name=".LoginActivity" />
         <activity android:name=".DashboardActivity" />
+        <activity android:name=".EditProfileActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>
