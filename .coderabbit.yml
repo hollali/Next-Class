@@ -1,0 +1,29 @@
+version: 1
+
+reviews:
+  path_includes:
+    - "app/src/**"
+  path_excludes:
+    - "build/**"
+    - ".gradle/**"
+    - ".idea/**"
+    - "**/generated/**"
+    - "gradle/**"
+    - "local.properties"
+
+rules:
+  style: true            # Enforce Java coding style
+  complexity: medium     # Warn if methods/classes get too complex
+  testing: optional      # Suggest tests but don’t block PRs
+  #security: strict       # Strong checks for Firebase (API keys, rules)
+  performance: true      # Highlight inefficient Android/Java code
+
+languages:
+  - java
+
+comments:
+  mode: suggestions      # Inline suggestions in PRs
+  max_comments: 20       # Cap to avoid noisy reviews
+
+#block_merge:
+  #on_critical: true      # Block PRs if critical security issues found

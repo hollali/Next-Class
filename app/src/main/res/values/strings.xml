@@ -22,11 +22,21 @@
     <string name="about_us">About Us</string>
     <string name="logout">Logout</string>
     <string name="search">search</string>
-    <string name="explore">Explore</string>
-    <string name="my_course">My Course</string>
     <string name="wishlist">Wishlist</string>
-    <string name="account">Account</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="explore_page_text">Explore Page</string>
+    <string name="my_course">Course\n</string>
+    <string name="explore">Explore</string>
+    <string name="profile">profile\n</string>
+
+    <string name="explore_page_text">This is the Explore Page</string>
+    <string name="welcome_to_next_class">Welcome to Next Class</string>
+    <string name="contact_ahofama_org">Contact: ahofama.org</string>
+    <string name="notifications">Notifications</string>
+    <string name="help">Help</string>
+    <string name="my_courses">My Courses</string>
+    <string name="my_courses_page_text">This is the Courses Page</string>
+    <string name="wishlist_page">This is the Wishlist Page</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="create">Create</string>
+
 
 </resources>

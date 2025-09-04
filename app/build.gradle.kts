@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
-    alias(libs.plugins.google.firebase.crashlytics)
+    id ("com.google.firebase.crashlytics")
 }
 
 android {
@@ -10,7 +10,7 @@ android {
     compileSdk = 35 // ✅ Updated for latest AndroidX libraries
 
     defaultConfig {
-        applicationId = "com.ahofama.nextclass.v2"
+        applicationId = "com.ahofama.nextclass"
         minSdk = 28
         targetSdk = 34 // ✅ Keep as 34 for now (safe)
         versionCode = 1
@@ -58,6 +58,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.drawerlayout)
 
+    implementation("com.google.android.material:material:<latest-version>")
+    implementation("androidx.viewpager2:viewpager2:<latest-version>")
 
     // Testing
     testImplementation(libs.junit)

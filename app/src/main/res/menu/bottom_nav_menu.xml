@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="@string/home"
+        android:icon="@drawable/ic_home"
+        android:id="@+id/home"/>
     <item android:title="@string/explore"
         android:icon="@drawable/outline_explore_24"
         android:id="@+id/explore"/>
-    <item android:title="@string/my_course"
-        android:icon="@drawable/baseline_play_circle_outline_24"
+    <item android:title="@string/create"
+        android:icon="@drawable/ic_add"
         android:id="@+id/course"/>
     <item android:title="@string/wishlist"
         android:icon="@drawable/baseline_favorite_24"
         android:id="@+id/wishlist"/>
+    <item android:title="@string/profile"
+        android:icon="@drawable/ic_person"
+        android:id="@+id/profile"/>
 
 </menu>
