@@ -8,4 +8,15 @@
     <color name="purple_500">#6200EE</color>
     <color name="purple_200">#BB86FC</color>
     <color name="background_dark">#121212</color>
+
+    <!-- Profile page colors -->
+    <color name="background_color">#F8F9FA</color>
+    <color name="primary_text">#1F2937</color>
+    <color name="secondary_text">#6B7280</color>
+    <color name="logout_button_color">#EF4444</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Additional colors -->
+    <color name="primary_color">#3B82F6</color>
+    <color name="accent_color">#10B981</color>
 </resources>
