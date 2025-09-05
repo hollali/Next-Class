@@ -38,7 +38,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="create">Create</string>
     <string name="profile_image">Profile Image</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading</string>
     <string name="account_information">Account Information</string>
     <string name="user_id">User ID:</string>
     <string name="account_type">Account Type:</string>
@@ -46,8 +46,9 @@
     <string name="logging_out">Logout</string>
     <string name="inbox">Inbox</string>
     <string name="completed">completed</string>
-    <string name="enrolled_courses">Enroolled Courses</string>
+    <string name="enrolled_courses">Enrolled Courses</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="instructors">Instructors</string>
 
 
 </resources>

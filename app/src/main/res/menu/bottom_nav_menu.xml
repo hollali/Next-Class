@@ -7,9 +7,9 @@
     <item android:title="@string/search"
         android:icon="@drawable/ic_search"
         android:id="@+id/search"/>
-    <!--<item android:title="@string/create"
-        android:icon="@drawable/ic_add"
-        android:id="@+id/course"/>-->
+    <item android:title="@string/instructors"
+        android:icon="@drawable/ic_groups"
+        android:id="@+id/instructor"/>
     <item android:title="@string/inbox"
         android:icon="@drawable/ic_message"
         android:id="@+id/message"/>
