@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 
 import com.ahofama.nextclass.databinding.DasboardActivityBinding;
-
-public class DashboardActivity extends AppCompatActivity{
+public class DashboardActivity extends AppCompatActivity {
 
     DasboardActivityBinding binding;
 
@@ -25,17 +23,13 @@ public class DashboardActivity extends AppCompatActivity{
 
             if (itemId == R.id.home) {
                 replaceFragment(new HomeFragment());
-            }
-            else if (itemId == R.id.explore) {
-                replaceFragment(new ExploreFragment());
-            }
-            else if (itemId == R.id.course) {
-                replaceFragment(new MyCourseFragment());
-            }
-            else if (itemId == R.id.wishlist) {
-                replaceFragment(new WishlistFragment());
-            }
-            else if (itemId == R.id.profile) {
+            } else if (itemId == R.id.search) {
+                replaceFragment(new SearchFragment());
+            } else if (itemId == R.id.instructors) {
+                replaceFragment(new InstructorFragment());
+            } else if (itemId == R.id.message) {
+                replaceFragment(new MessagingFragment());
+            } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());
             }
 
@@ -43,7 +37,7 @@ public class DashboardActivity extends AppCompatActivity{
         });
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);

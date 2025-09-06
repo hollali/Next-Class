@@ -3,6 +3,7 @@
         <!-- Core colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorSecondary">@color/secondary</item>
+        <!-- Material red for dark mode -->
 
         <!--<item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/on_surface</item>

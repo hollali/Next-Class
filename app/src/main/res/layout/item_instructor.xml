@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Instructor Profile Image -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/instructor_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            app:shapeAppearanceOverlay="@style/CircularImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Instructor Name -->
+        <TextView
+            android:id="@+id/instructor_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Dr. Sarah Johnson"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/instructor_image"
+            app:layout_constraintTop_toTopOf="@id/instructor_image"
+            app:layout_constraintEnd_toStartOf="@id/rating_container"
+            tools:text="Dr. Sarah Johnson" />
+
+        <!-- Subject/Specialization -->
+        <TextView
+            android:id="@+id/instructor_subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Mathematics • Calculus"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@id/instructor_image"
+            app:layout_constraintTop_toBottomOf="@id/instructor_name"
+            app:layout_constraintEnd_toStartOf="@id/rating_container"
+            tools:text="Mathematics • Calculus" />
+
+        <!-- Experience/Bio -->
+        <TextView
+            android:id="@+id/instructor_experience"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="5+ years experience • PhD in Mathematics"
+            android:textSize="12sp"
+            android:textColor="#888888"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toEndOf="@id/instructor_image"
+            app:layout_constraintTop_toBottomOf="@id/instructor_subject"
+            app:layout_constraintEnd_toStartOf="@id/rating_container"
+            tools:text="5+ years experience • PhD in Mathematics" />
+
+        <!-- Rating Container -->
+        <LinearLayout
+            android:id="@+id/rating_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/instructor_image">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_star"
+                app:tint="#FFC107" />
+
+            <TextView
+                android:id="@+id/instructor_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.8"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#FFC107"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+        <!-- Price and Status Row -->
+        <LinearLayout
+            android:id="@+id/bottom_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/instructor_image">
+
+            <!-- Price -->
+            <TextView
+                android:id="@+id/instructor_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="$25/hour"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#2E7D32"
+                tools:text="$25/hour" />
+
+            <!-- Availability Status -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:id="@+id/status_indicator"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/circle_status"
+                    android:backgroundTint="#4CAF50" />
+
+                <TextView
+                    android:id="@+id/instructor_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available"
+                    android:textSize="12sp"
+                    android:textColor="#4CAF50"
+                    android:layout_marginStart="6dp"
+                    tools:text="Available" />
+
+            </LinearLayout>
+
+            <!-- Action Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Contact"
+                android:textSize="12sp"
+                android:layout_marginStart="12dp"
+                style="@style/Widget.MaterialComponents.Button"
+                app:cornerRadius="18dp" />
+
+        </LinearLayout>
+
+        <!-- Tags/Subjects -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/subject_chips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottom_info">
+
+            <!-- Sample chips - these would be populated dynamically -->
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calculus"
+                android:textSize="10sp"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                app:chipBackgroundColor="#E3F2FD"
+                app:chipStrokeWidth="0dp"
+                tools:visibility="visible" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Algebra"
+                android:textSize="10sp"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                app:chipBackgroundColor="#E8F5E8"
+                app:chipStrokeWidth="0dp"
+                tools:visibility="visible" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -15,18 +15,16 @@ public class HomeTabAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0: return new NotificationsFragment();
-            case 1: return new MyCourseFragment();
-            case 2: return new WishlistFragment();
-            case 3: return new ExploreFragment();
-            case 4: return new SearchFragment();
-            default: return new MyCourseFragment();
+            case 0: return new ExploreFragment();
+            case 1: return new WishlistFragment();
+            case 2: return new MyCourseFragment();
+            default: return new ExploreFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 5; // now 5 tabs
+        return 3; // now 5 tabs
     }
 
 }
