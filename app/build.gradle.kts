@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.ahofama.nextclass"
-    compileSdk = 35 // ✅ Updated for latest AndroidX libraries
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.ahofama.nextclass"
         minSdk = 28
-        targetSdk = 34 // ✅ Keep as 34 for now (safe)
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -35,18 +35,17 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17 // ✅ Match Kotlin jvmTarget
+        sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "17" // ✅ Required for AGP 8.x and latest dependencies
+        jvmTarget = "17"
     }
 }
 
 dependencies {
     implementation(libs.appcompat)
-    implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.credentials)
@@ -54,14 +53,15 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.drawerlayout)
 
-    // ✅ Firebase BoM (manages versions for all Firebase libs)
+    // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
 
-    // ✅ Firebase dependencies (no version numbers!)
+    // Firebase dependencies
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-messaging")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.3.0")
@@ -70,8 +70,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    // Material Design Components
-    implementation("com.google.android.material:material:1.10.0")
+    // Material Design Components - Updated to latest version
+    implementation("com.google.android.material:material:1.12.0")
 
     // ConstraintLayout & CardView
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -82,4 +82,3 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
-
