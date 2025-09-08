@@ -77,6 +77,19 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.cardview:cardview:1.0.0")
 
+    // Material Design Components
+    implementation("com.google.android.material:material:1.10.0")
+// CircleImageView for profile pictures
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+// Lottie for animations (optional but recommended)
+    implementation("com.airbnb.android:lottie:6.1.0")
+// RecyclerView (usually included with material)
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+// ConstraintLayout
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+// CardView
+    implementation("androidx.cardview:cardview:1.0.0")
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
