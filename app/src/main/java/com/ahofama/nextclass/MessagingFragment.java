@@ -2,7 +2,7 @@ package com.ahofama.nextclass;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +29,7 @@ public class MessagingFragment extends Fragment {
     private List<Message> messageList = new ArrayList<>();
 
     private static final String CHANNEL_ID = "messages_channel";
+    private static final int REQUEST_NOTIFICATION_PERMISSION = 1001;
 
     public MessagingFragment() { }
 
@@ -55,9 +54,8 @@ public class MessagingFragment extends Fragment {
         // Create notification channel (for Android 8+)
         createNotificationChannel();
 
-        // Example: Show a notification for the first message
-        showNotification("New message from " + messageList.get(0).getSender(),
-                messageList.get(0).getContent());
+        // Ask for permission if needed, then show notification
+        requestNotificationPermission();
 
         return view;
     }
@@ -76,26 +74,18 @@ public class MessagingFragment extends Fragment {
         }
     }
 
-
-
     private void showNotification(String title, String message) {
-        // Check if we have the POST_NOTIFICATIONS permission
+        // Check permission again before posting
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(requireContext(),
                     android.Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-
-                // Request the permission
-                ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
-                        1001);
-                return; // Exit for now — will retry when permission is granted
+                return; // Don’t crash — permission missing
             }
         }
 
-        // Safe to post notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_message) // make sure you have this icon in drawable
+                .setSmallIcon(R.drawable.ic_message) // Ensure this exists
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
@@ -104,4 +94,41 @@ public class MessagingFragment extends Fragment {
         notificationManager.notify(1, builder.build());
     }
 
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                        REQUEST_NOTIFICATION_PERMISSION);
+            } else {
+                // Already granted → show a notification
+                showNotification("New message from " + messageList.get(0).getSender(),
+                        messageList.get(0).getContent());
+            }
+        } else {
+            // No runtime permission needed below Android 13
+            showNotification("New message from " + messageList.get(0).getSender(),
+                    messageList.get(0).getContent());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // User granted → now show notification
+                showNotification("New message from " + messageList.get(0).getSender(),
+                        messageList.get(0).getContent());
+            } else {
+                // User denied → you can show a Toast or Snackbar here
+            }
+        }
+    }
 }
