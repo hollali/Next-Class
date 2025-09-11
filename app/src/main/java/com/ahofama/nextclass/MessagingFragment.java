@@ -28,18 +28,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * MessagingFragment: Shown when a user clicks a chat from InboxFragment.
- * Displays chat header, messages, input bar, typing indicator, and notifications.
+ * MessagingFragment connected to Firebase Firestore.
  */
 public class MessagingFragment extends Fragment {
 
     private static final String ARG_USER_NAME = "user_name";
-    private String userName; // filled from arguments
+    private String userName;
 
     private RecyclerView recyclerMessages;
     private MessagesAdapter adapter;
@@ -67,11 +73,11 @@ public class MessagingFragment extends Fragment {
     private static final String CHANNEL_ID = "messages_channel";
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1001;
 
-    public MessagingFragment() { /* required empty constructor */ }
+    // Firebase
+    private FirebaseFirestore db;
 
-    /**
-     * Factory method to create a new instance of MessagingFragment with a username.
-     */
+    public MessagingFragment() {}
+
     public static MessagingFragment newInstance(String userName) {
         MessagingFragment fragment = new MessagingFragment();
         Bundle args = new Bundle();
@@ -83,10 +89,10 @@ public class MessagingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Read arguments early so they are available in initViews
         if (getArguments() != null) {
             userName = getArguments().getString(ARG_USER_NAME);
         }
+        db = FirebaseFirestore.getInstance();
     }
 
     @Nullable
@@ -102,6 +108,7 @@ public class MessagingFragment extends Fragment {
         setupTextWatcher();
         createNotificationChannel();
         requestNotificationPermission();
+        listenForMessages(); // 👈 listen for real-time updates
 
         return view;
     }
@@ -122,14 +129,13 @@ public class MessagingFragment extends Fragment {
         btnEmoji = view.findViewById(R.id.btnEmoji);
         btnSend = view.findViewById(R.id.btnSend);
 
-        dot1 = view.findViewById(R.id.dot1);
+        /*dot1 = view.findViewById(R.id.dot1);
         dot2 = view.findViewById(R.id.dot2);
-        dot3 = view.findViewById(R.id.dot3);
+        dot3 = view.findViewById(R.id.dot3);*/
 
-        // Use passed-in userName if available
         if (userName != null && !userName.isEmpty()) {
             tvUserName.setText(userName);
-            tvUserStatus.setText("Online"); // you can set a dynamic status later
+            tvUserStatus.setText("Online");
         } else {
             tvUserName.setText("Study Group");
             tvUserStatus.setText("3 members online");
@@ -141,34 +147,15 @@ public class MessagingFragment extends Fragment {
         layoutManager.setStackFromEnd(true);
         recyclerMessages.setLayoutManager(layoutManager);
 
-        addSampleMessages();
         adapter = new MessagesAdapter(getContext(), messageList);
         recyclerMessages.setAdapter(adapter);
 
         updateEmptyState();
     }
 
-    private void addSampleMessages() {
-        messageList.clear();
-        messageList.add(new Message("Alice", "Hey everyone! Ready for today's study session?", System.currentTimeMillis() - 300000));
-        messageList.add(new Message("Bob", "Yes! I've prepared the materials we discussed", System.currentTimeMillis() - 240000));
-        messageList.add(new Message("Clara", "Great! Should we start with the math problems?", System.currentTimeMillis() - 180000));
-        messageList.add(new Message("You", "Sounds good! I'll share my screen", System.currentTimeMillis() - 120000));
-        messageList.add(new Message("Alice", "Perfect! Let's do this 📚", System.currentTimeMillis() - 60000));
-    }
-
     private void setupClickListeners() {
         ivBack.setOnClickListener(v -> {
             if (getActivity() != null) getActivity().onBackPressed();
-        });
-
-        ivMore.setOnClickListener(v -> {
-            // TODO: Popup menu
-        });
-
-        btnAttachment.setOnClickListener(v -> {
-            // TODO: File picker or camera
-            showTypingIndicator(); // demo
         });
 
         btnEmoji.setOnClickListener(v -> etMessage.append("😊"));
@@ -190,74 +177,46 @@ public class MessagingFragment extends Fragment {
         String messageText = etMessage.getText().toString().trim();
         if (messageText.isEmpty()) return;
 
-        Message newMessage = new Message("You", messageText, System.currentTimeMillis());
-        messageList.add(newMessage);
-        adapter.notifyItemInserted(messageList.size() - 1);
-        recyclerMessages.scrollToPosition(messageList.size() - 1);
+        Map<String, Object> message = new HashMap<>();
+        message.put("sender", "You"); // TODO: replace with actual user
+        message.put("text", messageText);
+        message.put("timestamp", System.currentTimeMillis());
+
+        db.collection("chats")
+                .document("chat_1") // 👉 use dynamic chatId if you have multiple
+                .collection("messages")
+                .add(message);
+
         etMessage.setText("");
-        updateEmptyState();
-
-        showNotification("New message from You", messageText);
-        simulateResponse();
     }
 
-    private void simulateResponse() {
-        recyclerMessages.postDelayed(() -> {
-            showTypingIndicator();
-            recyclerMessages.postDelayed(() -> {
-                hideTypingIndicator();
-                String[] responses = {"That's a great point!", "I agree with that approach", "Let me think about that...", "Thanks for sharing!"};
-                String[] senders = {"Alice", "Bob", "Clara"};
-                String response = responses[(int) (Math.random() * responses.length)];
-                String sender = senders[(int) (Math.random() * senders.length)];
-                Message responseMessage = new Message(sender, response, System.currentTimeMillis());
-                messageList.add(responseMessage);
-                adapter.notifyItemInserted(messageList.size() - 1);
-                recyclerMessages.scrollToPosition(messageList.size() - 1);
-            }, 2000);
-        }, 1000);
-    }
+    private void listenForMessages() {
+        db.collection("chats")
+                .document("chat_1") // same chatId as above
+                .collection("messages")
+                .orderBy("timestamp")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) return;
+                        if (snapshots == null) return;
 
-    private void showTypingIndicator() {
-        typingIndicator.setVisibility(View.VISIBLE);
-        animateTypingDots();
-        recyclerMessages.postDelayed(() -> recyclerMessages.scrollToPosition(messageList.size() - 1), 100);
-    }
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            if (dc.getType() == DocumentChange.Type.ADDED) {
+                                String sender = dc.getDocument().getString("sender");
+                                String text = dc.getDocument().getString("text");
+                                long timestamp = dc.getDocument().getLong("timestamp");
 
-    private void hideTypingIndicator() {
-        typingIndicator.setVisibility(View.GONE);
-        stopTypingAnimation();
-    }
-
-    private void animateTypingDots() {
-        if (animator1 != null) animator1.cancel();
-        if (animator2 != null) animator2.cancel();
-        if (animator3 != null) animator3.cancel();
-
-        animator1 = ObjectAnimator.ofFloat(dot1, "alpha", 0.4f, 1.0f);
-        animator1.setDuration(600);
-        animator1.setRepeatCount(ObjectAnimator.INFINITE);
-        animator1.setRepeatMode(ObjectAnimator.REVERSE);
-
-        animator2 = ObjectAnimator.ofFloat(dot2, "alpha", 0.4f, 1.0f);
-        animator2.setDuration(600);
-        animator2.setRepeatCount(ObjectAnimator.INFINITE);
-        animator2.setRepeatMode(ObjectAnimator.REVERSE);
-        animator2.setStartDelay(200);
-
-        animator3 = ObjectAnimator.ofFloat(dot3, "alpha", 0.4f, 1.0f);
-        animator3.setDuration(600);
-        animator3.setRepeatCount(ObjectAnimator.INFINITE);
-        animator3.setRepeatMode(ObjectAnimator.REVERSE);
-        animator3.setStartDelay(400);
-
-        animator1.start(); animator2.start(); animator3.start();
-    }
-
-    private void stopTypingAnimation() {
-        if (animator1 != null) animator1.cancel();
-        if (animator2 != null) animator2.cancel();
-        if (animator3 != null) animator3.cancel();
+                                Message newMsg = new Message(sender, text, timestamp);
+                                messageList.add(newMsg);
+                                adapter.notifyItemInserted(messageList.size() - 1);
+                                recyclerMessages.scrollToPosition(messageList.size() - 1);
+                                updateEmptyState();
+                            }
+                        }
+                    }
+                });
     }
 
     private void updateEmptyState() {
@@ -289,7 +248,7 @@ public class MessagingFragment extends Fragment {
             if (ContextCompat.checkSelfPermission(requireContext(),
                     android.Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-                return; // permission missing
+                return;
             }
         }
 
@@ -308,31 +267,9 @@ public class MessagingFragment extends Fragment {
             if (ContextCompat.checkSelfPermission(requireContext(),
                     android.Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-
                 ActivityCompat.requestPermissions(requireActivity(),
                         new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
                         REQUEST_NOTIFICATION_PERMISSION);
-            } else {
-                if (!messageList.isEmpty()) {
-                    showNotification("Welcome to " + (userName != null ? userName : "Chat"),
-                            "Stay connected!");
-                }
-            }
-        } else {
-            if (!messageList.isEmpty()) {
-                showNotification("Welcome", "Stay connected!");
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showNotification("Notifications Enabled", "You'll now receive message notifications!");
             }
         }
     }
@@ -341,5 +278,11 @@ public class MessagingFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         stopTypingAnimation();
+    }
+
+    private void stopTypingAnimation() {
+        if (animator1 != null) animator1.cancel();
+        if (animator2 != null) animator2.cancel();
+        if (animator3 != null) animator3.cancel();
     }
 }
