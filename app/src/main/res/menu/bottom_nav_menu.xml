@@ -12,7 +12,7 @@
         android:id="@+id/instructors"/>
     <item android:title="@string/inbox"
         android:icon="@drawable/ic_message"
-        android:id="@+id/message"/>
+        android:id="@+id/inbox"/>
     <item android:title="@string/profile"
         android:icon="@drawable/ic_person"
         android:id="@+id/profile"/>

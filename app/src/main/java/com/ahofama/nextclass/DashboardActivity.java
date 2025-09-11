@@ -27,8 +27,8 @@ public class DashboardActivity extends AppCompatActivity {
                 replaceFragment(new SearchFragment());
             } else if (itemId == R.id.instructors) {
                 replaceFragment(new InstructorFragment());
-            } else if (itemId == R.id.message) {
-                replaceFragment(new MessagingFragment());
+            } else if (itemId == R.id.inbox) {
+                replaceFragment(new InboxFragment());
             } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());
             }

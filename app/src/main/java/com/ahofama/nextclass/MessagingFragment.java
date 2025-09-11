@@ -32,7 +32,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MessagingFragment: Shown when a user clicks a chat from InboxFragment.
+ * Displays chat header, messages, input bar, typing indicator, and notifications.
+ */
 public class MessagingFragment extends Fragment {
+
+    private static final String ARG_USER_NAME = "user_name";
+    private String userName; // filled from arguments
 
     private RecyclerView recyclerMessages;
     private MessagesAdapter adapter;
@@ -40,27 +47,47 @@ public class MessagingFragment extends Fragment {
     private LinearLayout emptyStateLayout;
     private LinearLayout typingIndicator;
 
-    // Header views
+    // Header
     private ImageView ivBack;
     private ImageView ivUserAvatar;
     private TextView tvUserName;
     private TextView tvUserStatus;
     private ImageView ivMore;
 
-    // Input views
+    // Input
     private EditText etMessage;
     private ImageButton btnAttachment;
     private ImageButton btnEmoji;
     private FloatingActionButton btnSend;
 
-    // Typing animation views
+    // Typing animation
     private View dot1, dot2, dot3;
     private ObjectAnimator animator1, animator2, animator3;
 
     private static final String CHANNEL_ID = "messages_channel";
     private static final int REQUEST_NOTIFICATION_PERMISSION = 1001;
 
-    public MessagingFragment() { }
+    public MessagingFragment() { /* required empty constructor */ }
+
+    /**
+     * Factory method to create a new instance of MessagingFragment with a username.
+     */
+    public static MessagingFragment newInstance(String userName) {
+        MessagingFragment fragment = new MessagingFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_USER_NAME, userName);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Read arguments early so they are available in initViews
+        if (getArguments() != null) {
+            userName = getArguments().getString(ARG_USER_NAME);
+        }
+    }
 
     @Nullable
     @Override
@@ -73,61 +100,56 @@ public class MessagingFragment extends Fragment {
         setupRecyclerView();
         setupClickListeners();
         setupTextWatcher();
-
-        // Create notification channel (for Android 8+)
         createNotificationChannel();
-
-        // Ask for permission if needed, then show notification
         requestNotificationPermission();
 
         return view;
     }
 
     private void initViews(View view) {
-        // RecyclerView and empty state
         recyclerMessages = view.findViewById(R.id.recyclerMessages);
         emptyStateLayout = view.findViewById(R.id.emptyStateLayout);
         typingIndicator = view.findViewById(R.id.typingIndicator);
 
-        // Header views
         ivBack = view.findViewById(R.id.ivBack);
         ivUserAvatar = view.findViewById(R.id.ivUserAvatar);
         tvUserName = view.findViewById(R.id.tvUserName);
         tvUserStatus = view.findViewById(R.id.tvUserStatus);
         ivMore = view.findViewById(R.id.ivMore);
 
-        // Input views
         etMessage = view.findViewById(R.id.etMessage);
         btnAttachment = view.findViewById(R.id.btnAttachment);
         btnEmoji = view.findViewById(R.id.btnEmoji);
         btnSend = view.findViewById(R.id.btnSend);
 
-        // Typing dots
         dot1 = view.findViewById(R.id.dot1);
         dot2 = view.findViewById(R.id.dot2);
         dot3 = view.findViewById(R.id.dot3);
 
-        // Set default user info
-        tvUserName.setText("Study Group");
-        tvUserStatus.setText("3 members online");
+        // Use passed-in userName if available
+        if (userName != null && !userName.isEmpty()) {
+            tvUserName.setText(userName);
+            tvUserStatus.setText("Online"); // you can set a dynamic status later
+        } else {
+            tvUserName.setText("Study Group");
+            tvUserStatus.setText("3 members online");
+        }
     }
 
     private void setupRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setStackFromEnd(true); // Start from bottom
+        layoutManager.setStackFromEnd(true);
         recyclerMessages.setLayoutManager(layoutManager);
 
-        // Add sample messages
         addSampleMessages();
-
         adapter = new MessagesAdapter(getContext(), messageList);
         recyclerMessages.setAdapter(adapter);
 
-        // Show/hide empty state
         updateEmptyState();
     }
 
     private void addSampleMessages() {
+        messageList.clear();
         messageList.add(new Message("Alice", "Hey everyone! Ready for today's study session?", System.currentTimeMillis() - 300000));
         messageList.add(new Message("Bob", "Yes! I've prepared the materials we discussed", System.currentTimeMillis() - 240000));
         messageList.add(new Message("Clara", "Great! Should we start with the math problems?", System.currentTimeMillis() - 180000));
@@ -136,105 +158,62 @@ public class MessagingFragment extends Fragment {
     }
 
     private void setupClickListeners() {
-        // Back button
         ivBack.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
+            if (getActivity() != null) getActivity().onBackPressed();
         });
 
-        // More options
         ivMore.setOnClickListener(v -> {
-            // TODO: Show options menu
-            // You can implement PopupMenu here
+            // TODO: Popup menu
         });
 
-        // Attachment button
         btnAttachment.setOnClickListener(v -> {
-            // TODO: Open file picker or camera
-            showTypingIndicator(); // Demo typing indicator
+            // TODO: File picker or camera
+            showTypingIndicator(); // demo
         });
 
-        // Emoji button
-        btnEmoji.setOnClickListener(v -> {
-            // TODO: Open emoji picker
-            etMessage.append("😊");
-        });
+        btnEmoji.setOnClickListener(v -> etMessage.append("😊"));
 
-        // Send button
         btnSend.setOnClickListener(v -> sendMessage());
     }
 
     private void setupTextWatcher() {
         etMessage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Update send button visibility based on text
-                if (s.toString().trim().isEmpty()) {
-                    btnSend.setAlpha(0.5f);
-                } else {
-                    btnSend.setAlpha(1.0f);
-                }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                btnSend.setAlpha(s.toString().trim().isEmpty() ? 0.5f : 1.0f);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
     }
 
     private void sendMessage() {
         String messageText = etMessage.getText().toString().trim();
+        if (messageText.isEmpty()) return;
 
-        if (!messageText.isEmpty()) {
-            // Add new message
-            Message newMessage = new Message("You", messageText, System.currentTimeMillis());
-            messageList.add(newMessage);
-            adapter.notifyItemInserted(messageList.size() - 1);
+        Message newMessage = new Message("You", messageText, System.currentTimeMillis());
+        messageList.add(newMessage);
+        adapter.notifyItemInserted(messageList.size() - 1);
+        recyclerMessages.scrollToPosition(messageList.size() - 1);
+        etMessage.setText("");
+        updateEmptyState();
 
-            // Scroll to bottom
-            recyclerMessages.scrollToPosition(messageList.size() - 1);
-
-            // Clear input
-            etMessage.setText("");
-
-            // Update empty state
-            updateEmptyState();
-
-            // Show notification for the new message
-            showNotification("New message from You", messageText);
-
-            // Simulate response after 2 seconds
-            simulateResponse();
-        }
+        showNotification("New message from You", messageText);
+        simulateResponse();
     }
 
     private void simulateResponse() {
         recyclerMessages.postDelayed(() -> {
             showTypingIndicator();
-
             recyclerMessages.postDelayed(() -> {
                 hideTypingIndicator();
-
-                String[] responses = {
-                        "That's a great point!",
-                        "I agree with that approach",
-                        "Let me think about that...",
-                        "Thanks for sharing!",
-                        "That makes sense 👍"
-                };
-
-                String response = responses[(int) (Math.random() * responses.length)];
+                String[] responses = {"That's a great point!", "I agree with that approach", "Let me think about that...", "Thanks for sharing!"};
                 String[] senders = {"Alice", "Bob", "Clara"};
+                String response = responses[(int) (Math.random() * responses.length)];
                 String sender = senders[(int) (Math.random() * senders.length)];
-
                 Message responseMessage = new Message(sender, response, System.currentTimeMillis());
                 messageList.add(responseMessage);
                 adapter.notifyItemInserted(messageList.size() - 1);
                 recyclerMessages.scrollToPosition(messageList.size() - 1);
-
             }, 2000);
         }, 1000);
     }
@@ -242,11 +221,7 @@ public class MessagingFragment extends Fragment {
     private void showTypingIndicator() {
         typingIndicator.setVisibility(View.VISIBLE);
         animateTypingDots();
-
-        // Scroll to show typing indicator
-        recyclerMessages.postDelayed(() -> {
-            recyclerMessages.scrollToPosition(messageList.size() - 1);
-        }, 100);
+        recyclerMessages.postDelayed(() -> recyclerMessages.scrollToPosition(messageList.size() - 1), 100);
     }
 
     private void hideTypingIndicator() {
@@ -276,9 +251,7 @@ public class MessagingFragment extends Fragment {
         animator3.setRepeatMode(ObjectAnimator.REVERSE);
         animator3.setStartDelay(400);
 
-        animator1.start();
-        animator2.start();
-        animator3.start();
+        animator1.start(); animator2.start(); animator3.start();
     }
 
     private void stopTypingAnimation() {
@@ -312,23 +285,22 @@ public class MessagingFragment extends Fragment {
     }
 
     private void showNotification(String title, String message) {
-        // Check permission again before posting
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(requireContext(),
                     android.Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-                return; // Don't crash — permission missing
+                return; // permission missing
             }
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_send) // Using send icon since ic_message might not exist
+                .setSmallIcon(R.drawable.ic_send)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
-        notificationManager.notify((int) System.currentTimeMillis(), builder.build()); // Use timestamp for unique ID
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
 
     private void requestNotificationPermission() {
@@ -341,17 +313,14 @@ public class MessagingFragment extends Fragment {
                         new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
                         REQUEST_NOTIFICATION_PERMISSION);
             } else {
-                // Already granted → show a notification
                 if (!messageList.isEmpty()) {
-                    showNotification("Welcome to Study Group",
-                            "Stay connected with your classmates!");
+                    showNotification("Welcome to " + (userName != null ? userName : "Chat"),
+                            "Stay connected!");
                 }
             }
         } else {
-            // No runtime permission needed below Android 13
             if (!messageList.isEmpty()) {
-                showNotification("Welcome to Study Group",
-                        "Stay connected with your classmates!");
+                showNotification("Welcome", "Stay connected!");
             }
         }
     }
@@ -361,14 +330,9 @@ public class MessagingFragment extends Fragment {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // User granted → now show notification
-                showNotification("Notifications Enabled",
-                        "You'll now receive message notifications!");
-            } else {
-                // User denied → you can show a Toast or Snackbar here
+                showNotification("Notifications Enabled", "You'll now receive message notifications!");
             }
         }
     }
@@ -376,6 +340,6 @@ public class MessagingFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        stopTypingAnimation(); // Clean up animations
+        stopTypingAnimation();
     }
 }
