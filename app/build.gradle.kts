@@ -56,12 +56,14 @@ dependencies {
     // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
 
-    // Firebase dependencies
+    //! Firebase dependencies
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.3.0")

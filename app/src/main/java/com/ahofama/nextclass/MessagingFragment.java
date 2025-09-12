@@ -1,10 +1,5 @@
 package com.ahofama.nextclass;
 
-import android.animation.ObjectAnimator;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,39 +14,30 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * MessagingFragment connected to Firebase Firestore.
- */
 public class MessagingFragment extends Fragment {
 
-    private static final String ARG_USER_NAME = "user_name";
-    private String userName;
+    private static final String ARG_CHAT_ID = "chat_id";
+    private String chatId;
 
     private RecyclerView recyclerMessages;
     private MessagesAdapter adapter;
     private List<Message> messageList = new ArrayList<>();
     private LinearLayout emptyStateLayout;
-    private LinearLayout typingIndicator;
 
     // Header
     private ImageView ivBack;
@@ -66,22 +52,16 @@ public class MessagingFragment extends Fragment {
     private ImageButton btnEmoji;
     private FloatingActionButton btnSend;
 
-    // Typing animation
-    private View dot1, dot2, dot3;
-    private ObjectAnimator animator1, animator2, animator3;
-
-    private static final String CHANNEL_ID = "messages_channel";
-    private static final int REQUEST_NOTIFICATION_PERMISSION = 1001;
-
     // Firebase
-    private FirebaseFirestore db;
+    private DatabaseReference messagesRef;
+    private String currentUserId;
 
-    public MessagingFragment() {}
+    public MessagingFragment() { }
 
-    public static MessagingFragment newInstance(String userName) {
+    public static MessagingFragment newInstance(String chatId) {
         MessagingFragment fragment = new MessagingFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_USER_NAME, userName);
+        args.putString(ARG_CHAT_ID, chatId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,9 +70,13 @@ public class MessagingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            userName = getArguments().getString(ARG_USER_NAME);
+            chatId = getArguments().getString(ARG_CHAT_ID);
         }
-        db = FirebaseFirestore.getInstance();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        messagesRef = FirebaseDatabase.getInstance()
+                .getReference("chats")
+                .child(chatId)
+                .child("messages");
     }
 
     @Nullable
@@ -106,9 +90,7 @@ public class MessagingFragment extends Fragment {
         setupRecyclerView();
         setupClickListeners();
         setupTextWatcher();
-        createNotificationChannel();
-        requestNotificationPermission();
-        listenForMessages(); // 👈 listen for real-time updates
+        listenForMessages();
 
         return view;
     }
@@ -116,7 +98,6 @@ public class MessagingFragment extends Fragment {
     private void initViews(View view) {
         recyclerMessages = view.findViewById(R.id.recyclerMessages);
         emptyStateLayout = view.findViewById(R.id.emptyStateLayout);
-        typingIndicator = view.findViewById(R.id.typingIndicator);
 
         ivBack = view.findViewById(R.id.ivBack);
         ivUserAvatar = view.findViewById(R.id.ivUserAvatar);
@@ -129,17 +110,8 @@ public class MessagingFragment extends Fragment {
         btnEmoji = view.findViewById(R.id.btnEmoji);
         btnSend = view.findViewById(R.id.btnSend);
 
-        /*dot1 = view.findViewById(R.id.dot1);
-        dot2 = view.findViewById(R.id.dot2);
-        dot3 = view.findViewById(R.id.dot3);*/
-
-        if (userName != null && !userName.isEmpty()) {
-            tvUserName.setText(userName);
-            tvUserStatus.setText("Online");
-        } else {
-            tvUserName.setText("Study Group");
-            tvUserStatus.setText("3 members online");
-        }
+        tvUserName.setText("Chat");  // you can fetch chat participants later
+        tvUserStatus.setText("Active now");
     }
 
     private void setupRecyclerView() {
@@ -159,7 +131,6 @@ public class MessagingFragment extends Fragment {
         });
 
         btnEmoji.setOnClickListener(v -> etMessage.append("😊"));
-
         btnSend.setOnClickListener(v -> sendMessage());
     }
 
@@ -177,46 +148,34 @@ public class MessagingFragment extends Fragment {
         String messageText = etMessage.getText().toString().trim();
         if (messageText.isEmpty()) return;
 
-        Map<String, Object> message = new HashMap<>();
-        message.put("sender", "You"); // TODO: replace with actual user
-        message.put("text", messageText);
-        message.put("timestamp", System.currentTimeMillis());
+        String messageId = messagesRef.push().getKey();
+        Message newMessage = new Message(currentUserId, messageText, System.currentTimeMillis());
 
-        db.collection("chats")
-                .document("chat_1") // 👉 use dynamic chatId if you have multiple
-                .collection("messages")
-                .add(message);
+        if (messageId != null) {
+            messagesRef.child(messageId).setValue(newMessage);
+        }
 
         etMessage.setText("");
     }
 
     private void listenForMessages() {
-        db.collection("chats")
-                .document("chat_1") // same chatId as above
-                .collection("messages")
-                .orderBy("timestamp")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) return;
-                        if (snapshots == null) return;
+        messagesRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, String previousChildName) {
+                Message message = snapshot.getValue(Message.class);
+                if (message != null) {
+                    messageList.add(message);
+                    adapter.notifyItemInserted(messageList.size() - 1);
+                    recyclerMessages.scrollToPosition(messageList.size() - 1);
+                    updateEmptyState();
+                }
+            }
 
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                String sender = dc.getDocument().getString("sender");
-                                String text = dc.getDocument().getString("text");
-                                long timestamp = dc.getDocument().getLong("timestamp");
-
-                                Message newMsg = new Message(sender, text, timestamp);
-                                messageList.add(newMsg);
-                                adapter.notifyItemInserted(messageList.size() - 1);
-                                recyclerMessages.scrollToPosition(messageList.size() - 1);
-                                updateEmptyState();
-                            }
-                        }
-                    }
-                });
+            @Override public void onChildChanged(@NonNull DataSnapshot snapshot, String prev) {}
+            @Override public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            @Override public void onChildMoved(@NonNull DataSnapshot snapshot, String prev) {}
+            @Override public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     private void updateEmptyState() {
@@ -227,62 +186,5 @@ public class MessagingFragment extends Fragment {
             emptyStateLayout.setVisibility(View.GONE);
             recyclerMessages.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Messages";
-            String description = "Message notifications";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager =
-                    requireContext().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private void showNotification(String title, String message) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(),
-                    android.Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_send)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
-        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
-    }
-
-    private void requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(),
-                    android.Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
-                        REQUEST_NOTIFICATION_PERMISSION);
-            }
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        stopTypingAnimation();
-    }
-
-    private void stopTypingAnimation() {
-        if (animator1 != null) animator1.cancel();
-        if (animator2 != null) animator2.cancel();
-        if (animator3 != null) animator3.cancel();
     }
 }

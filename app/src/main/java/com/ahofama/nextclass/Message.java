@@ -1,27 +1,18 @@
 package com.ahofama.nextclass;
-
 public class Message {
-    private String sender;
-    private String content;
+    private String senderId;
+    private String text;
     private long timestamp;
 
-    public Message() { }
+    public Message() {} // required for Firebase
 
-    public Message(String sender, String content, long timestamp) {
-        this.sender = sender;
-        this.content = content;
+    public Message(String senderId, String text, long timestamp) {
+        this.senderId = senderId;
+        this.text = text;
         this.timestamp = timestamp;
     }
 
-    public String getSender() {
-        return sender;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
+    public String getSenderId() { return senderId; }
+    public String getText() { return text; }
+    public long getTimestamp() { return timestamp; }
 }
