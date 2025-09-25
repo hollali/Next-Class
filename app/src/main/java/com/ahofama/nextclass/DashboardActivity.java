@@ -23,12 +23,8 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (itemId == R.id.home) {
                 replaceFragment(new HomeFragment());
-            } else if (itemId == R.id.search) {
-                replaceFragment(new SearchFragment());
             } else if (itemId == R.id.instructors) {
                 replaceFragment(new InstructorFragment());
-            } else if (itemId == R.id.inbox) {
-                replaceFragment(new InboxFragment());
             } else if (itemId == R.id.profile) {
                 replaceFragment(new ProfileFragment());
             }
