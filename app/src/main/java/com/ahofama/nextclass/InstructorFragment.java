@@ -111,7 +111,7 @@ public class InstructorFragment extends Fragment {
                 "5+ years experience • PhD in Mathematics",
                 4.8f,
                 25.0,
-                "Available",
+                "Online",
                 true,
                 new String[]{"Calculus", "Algebra", "Statistics"}
         ));
@@ -123,7 +123,7 @@ public class InstructorFragment extends Fragment {
                 "8+ years experience • MS Computer Science",
                 4.9f,
                 35.0,
-                "Available",
+                "Online",
                 true,
                 new String[]{"Java", "Python", "Algorithms"}
         ));
@@ -147,7 +147,7 @@ public class InstructorFragment extends Fragment {
                 "4+ years experience • MA English Literature",
                 4.6f,
                 20.0,
-                "Available",
+                "Online",
                 true,
                 new String[]{"Essay Writing", "Literature Analysis"}
         ));
@@ -159,7 +159,7 @@ public class InstructorFragment extends Fragment {
                 "7+ years experience • PhD History",
                 4.8f,
                 28.0,
-                "Available",
+                "Online",
                 true,
                 new String[]{"World War II", "Ancient History"}
         ));

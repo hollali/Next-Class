@@ -56,12 +56,14 @@ dependencies {
     // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
 
-    // Firebase dependencies
+    //! Firebase dependencies
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:21.3.0")
@@ -75,6 +77,19 @@ dependencies {
 
     // ConstraintLayout & CardView
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // Material Design Components
+    implementation("com.google.android.material:material:1.10.0")
+// CircleImageView for profile pictures
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+// Lottie for animations (optional but recommended)
+    implementation("com.airbnb.android:lottie:6.1.0")
+// RecyclerView (usually included with material)
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+// ConstraintLayout
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+// CardView
     implementation("androidx.cardview:cardview:1.0.0")
 
     // Testing
