@@ -14,17 +14,24 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class OnboardingActivity extends AppCompatActivity {
 
+    // 🔑 Toggle this flag
+    private static final boolean ALWAYS_SHOW_ONBOARDING = true;
+    // true  = show onboarding every time
+    // false = show onboarding only once
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Check if onboarding was completed before
-        SharedPreferences prefs = getSharedPreferences("NextClassPrefs", MODE_PRIVATE);
-        boolean isOnboardingCompleted = prefs.getBoolean("onboarding_completed", false);
+        if (!ALWAYS_SHOW_ONBOARDING) {
+            // Check if onboarding was completed before
+            SharedPreferences prefs = getSharedPreferences("NextClassPrefs", MODE_PRIVATE);
+            boolean isOnboardingCompleted = prefs.getBoolean("onboarding_completed", false);
 
-        if (isOnboardingCompleted) {
-            navigateToMain();
-            return;
+            if (isOnboardingCompleted) {
+                navigateToMain();
+                return;
+            }
         }
 
         // Enable Edge-to-Edge
@@ -32,7 +39,7 @@ public class OnboardingActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.onboarding_activity);
 
-        // Apply window insets
+        // Apply window insets (for status/navigation bar)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.onboarding), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -42,10 +49,13 @@ public class OnboardingActivity extends AppCompatActivity {
         // Get Started Button
         Button getStartedButton = findViewById(R.id.btn_get_started);
         getStartedButton.setOnClickListener(v -> {
-            // Save onboarding as completed
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("onboarding_completed", true);
-            editor.apply();
+            if (!ALWAYS_SHOW_ONBOARDING) {
+                // Save onboarding as completed
+                SharedPreferences prefs = getSharedPreferences("NextClassPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("onboarding_completed", true);
+                editor.apply();
+            }
 
             // Navigate to MainActivity
             navigateToMain();
@@ -53,7 +63,7 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private void navigateToMain() {
-        Intent intent = new Intent(OnboardingActivity.this, LoginActivity.class);
+        Intent intent = new Intent(OnboardingActivity.this, LoginPageActivity.class);
         startActivity(intent);
         finish();
     }

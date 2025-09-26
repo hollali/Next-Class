@@ -12,7 +12,7 @@
     <string name="welcome_text">Welcome To The Future of Learning.</string>
     <string name="sign_in_email">Sign in with Email</string>
     <string name="dont_have_account">Don\'t have an account?</string>
-    <string name="sign_up">sign up</string>
+    <string name="sign_up">Sign up</string>
     <string name="default_web_client_id">744221201058-jkbsf4sm3m3802e5n9nhje5b7lebsgv3.apps.googleusercontent.com</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
@@ -60,6 +60,7 @@
     <string name="send_message">send message</string>
     <string name="typing">Typinp</string>
     <string name="more_options">More</string>
+    <string name="already_have_an_account">Already have an account!</string>
 
 
 </resources>
