@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ahofama.nextclass.database.DBHelper;
 
+
 public class LoginPageActivity extends AppCompatActivity{
     TextView signUpText;
     EditText etUsername, etPassword;
